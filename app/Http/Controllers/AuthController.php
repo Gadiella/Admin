@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Authentication\LoginRequest;
+use App\Http\Requests\Authentication\OtpRequest;
 use App\Interfaces\AuthenticationInterfaces;
 
 class AuthController extends Controller
@@ -31,4 +32,23 @@ public function login(LoginRequest $request)
         }
 
     } 
+
+    public function check0tpCode(OtpRequest $request)
+    {
+        $data = [
+            'email' => $request->email,
+            'code' => $request->code,
+
+        ];
+        try {
+
+            $code = $this->authInterface->checkOtpCode($data);
+            if (!$code)
+                return back()->with('error', 'Code de confirmation invalide.');
+            else
+                return redirect()->route('newPassword');
+        } catch (\Exception $ex) {
+            return back()->with('error', 'Une erreur est survnue lors du traitement, Réessayez !');
+        }
+    }
 }

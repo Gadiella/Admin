@@ -11,7 +11,7 @@ class OtpRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,23 @@ class OtpRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'email' => 'required|min:3|max:128|email',
+            'code' => 'required|min:4|max:6',
+        ];
+    }
+
+    public function messages(): array
+
+    {
+
+        return [
+            'email.email' => 'L\'adresse e-mail est invalide.',
+            'email.required' => 'L\'adresse e-mail est requise.',
+            'email.min' => 'L\'e-mail doit contenir au minimum 3 caractères.',
+            'email.max' => 'L\'e-mail doit contenir au maximum 128 caractères.',
+            'code.required' => 'Le code de confirmation est requis.',
+            'code.min' => 'Le code doit contenir au minimum 4 caractères.',
+            'code.max' => 'Le code doit contenir au maximum 6 caractères.',
         ];
     }
 }

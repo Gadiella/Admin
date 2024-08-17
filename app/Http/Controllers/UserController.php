@@ -1,10 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Interfaces\AuthenticationInterfaces;
+use App\Http\Requests\Authentication\LoginRequest;
+use App\Mail\SendMail;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -21,26 +25,34 @@ class UserController extends Controller
         return view('users.create');
     }
 
-    public function store(Request $request)
+    public function store(LoginRequest $request)
     {
        
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
-        ]);
+        // $request->validate([
+        //     'name' => 'required|string|max:255',
+        //     'email' => 'required|string|email|max:255|unique:users',
+        //     'password' => 'required|string|min:8',
+        // ]);
+
 
         $user= new User;
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->password = Hash::make($request->password);
+        $user->password = $request->password;
+        Mail::to($request->email)->send(new SendMail($request->name, $request->password));
         
         $user->save();
 
-        return redirect()->route('users.index')->with('success', 'Utilisateur enregistré avec succès.');
+        // try {
 
-       
-       
+        //     $user = $this->$user->store();
+
+        //     return redirect()->route('users.index')->with('success', 'Utilisateur enregistré avec succès.');
+
+        // } catch (\Exception $ex) {
+        // return "gadiel";    }
+         
+    
     }
 
     public function edit(User $user)

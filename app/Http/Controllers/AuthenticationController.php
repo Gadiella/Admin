@@ -32,12 +32,14 @@ class AuthenticationController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function checkOtpCode()
     {
-        //
+
+        if (Auth::check()) {
+
+            return redirect()->route('dashbord');
+        }
+        return view('otp');
     }
 
     /**
