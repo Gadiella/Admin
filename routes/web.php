@@ -29,3 +29,4 @@ Route::put('/update/{user}', [UserController::class, 'update'])->name('users.upd
 Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
 Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
+
