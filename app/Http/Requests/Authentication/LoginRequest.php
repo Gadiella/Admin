@@ -22,7 +22,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|min:3|max:128|email',
+            'email' => 'required|min:3|max:128|email|unique:users',
             'password' => 'required|min:6|max:64'
           ];
     }
@@ -31,6 +31,7 @@ class LoginRequest extends FormRequest
     {
       return [
         'email.email' => 'L\'adresse e-mail est invalide.',
+        'email.unique' => 'L\'adresse e-mail existe déjà.',
         'email.required' => 'L\'adresse e-mail est requise.',
         'email.min' => 'L\'e-maill doit contenir au minimum 3 caractères.',
         'email.max' => 'L\'e-maill doit contenir au maximum 128 caractères.',

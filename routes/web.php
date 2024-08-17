@@ -21,6 +21,7 @@ Route::get('/logout', [AuthenticationController::class, 'logout'])->name('logout
 
 
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
+Route::get('/users/use_dashbord', [UserController::class, 'user_index'])->name('users.use_dashbord');
 Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
 // Route::post('', [UserController::class, 'store'])->name('users.store');
 Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
@@ -28,5 +29,3 @@ Route::put('/update/{user}', [UserController::class, 'update'])->name('users.upd
 Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
 Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
-Route::post('/otp-code', [AuthController::class, 'checkOtpCode'])->name('otpCde.process');
-Route::get('/otp-code', [AuthenticationController::class, 'checkOtpCode'])->name('otpCde');

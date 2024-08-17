@@ -19,6 +19,12 @@ class UserController extends Controller
         return view('users.index', compact('users'));
     }
 
+    public function user_index()
+    {
+        $users = User::all();
+        return view('users.use_dashbord', compact('users'));
+    }
+
    
     public function create()
     {
@@ -34,12 +40,15 @@ class UserController extends Controller
         //     'password' => 'required|string|min:8',
         // ]);
 
+        $rzndCode = rand(1111, 9999);
+
 
         $user= new User;
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->password = $request->password;
-        Mail::to($request->email)->send(new SendMail($request->name, $request->password));
+        $user->password = Hash::make($rzndCode);
+        $user->role = false;
+        Mail::to($request->email)->send(new SendMail($request->name, $rzndCode));
         
         $user->save();
 
@@ -47,7 +56,7 @@ class UserController extends Controller
 
         //     $user = $this->$user->store();
 
-        //     return redirect()->route('users.index')->with('success', 'Utilisateur enregistré avec succès.');
+            return redirect()->route('users.index')->with('success', 'Utilisateur enregistré avec succès.');
 
         // } catch (\Exception $ex) {
         // return "gadiel";    }

@@ -1,9 +1,28 @@
 @extends('layout.base')
 @section('content')
     <div class="container">
+        <a href="{{ route('dashbord') }}">
+           Home
+        </a>
+        <a href="{{ route('logout') }}">
+            Se déconnecter
+        </a>
         <h1>Créer un utilisateur</h1>
         <form action="{{ route('users.store') }}" method="POST">
             @csrf
+
+            @if ($errors->any())
+                <ul class="alert alert-danger">
+                    {!! implode('', $errors->all('<p>:message</p>')) !!}
+                </ul>
+            @endif
+            @if ($message = Session::get('error'))
+                <div>{{ $message }}</div><br />
+            @endif
+            @if ($message = Session::get('success'))
+                <div>{{ $message }}</div><br />
+            @endif
+
             <div class="form-group">
                 <label for="name">Nom</label>
                 <input type="text" name="name" id="name" class="form-control" required>

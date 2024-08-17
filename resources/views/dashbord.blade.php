@@ -20,6 +20,7 @@
                     </a>
 
                     <a href="{{ route('users.create') }}">Créer un utilisateur</a>
+                    <a href="{{ route('users.index') }}">Afficher les utilisateur</a>
                 </td>
             </tr>
         </tbody>

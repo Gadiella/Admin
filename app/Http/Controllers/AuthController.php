@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Authentication\LoginRequest;
 use App\Http\Requests\Authentication\OtpRequest;
 use App\Interfaces\AuthenticationInterfaces;
+use App\Models\User;
+use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -14,22 +16,30 @@ public function __construct(AuthenticationInterfaces $authInterface)
     $this->authInterface = $authInterface;
 }
 
-public function login(LoginRequest $request)
+public function login(Request $request)
     {
         $data = [
             'email' => $request->email,
             'password' => $request->password,
         ];
 
-        try {
+        $user = User::where('email', $request->email)->first();
 
-            if ($this->authInterface->login($data))
-                return redirect()->route('dashbord');
-            else
-                return back()->with('error', 'Email ou mot de passe incorrect(s).');
-        } catch (\Exception $ex) {
-            return back()->with('error', 'Une erreur est survnue lors du traitement, Réessayez !');
+        if ($this->authInterface->login($data)) {
+
+            if ($user->role == false) {
+                return redirect()->route('users.use_dashbord');
+            }
+
+            return redirect()->route('dashbord');
+        } else {
+            return back()->with('error', 'Email ou mot de passe incorrect(s).');
         }
+        // try {
+
+        // } catch (\Exception $ex) {
+        //     return back()->with('error', 'Une erreur est survnue lors du traitement, Réessayez !');
+        // }
 
     } 
 
